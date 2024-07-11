@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import L, { icon } from 'leaflet'; // Import Leaflet library
+import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
 
 function App() {
   const [surfaceImage, setSurfaceImage] = useState('');
+  const [activeStep, setActiveStep] = useState(0); // State untuk melacak langkah aktif
   const videoRef = useRef(null);
+  const mapRef = useRef(null); // useRef untuk menyimpan referensi ke elemen peta
 
   useEffect(() => {
     const imgPaths = ['/pic.jpg', '/pic2.jpg']; // Tambahkan lebih banyak jalur gambar jika diperlukan
@@ -61,6 +65,40 @@ function App() {
     startVideo();
   }, []); // Dependency array kosong agar useEffect dipanggil hanya sekali saat komponen dimount
 
+  useEffect(() => {
+    const steps = 6; // Jumlah langkah
+    let stepIntervalId = setInterval(() => {
+      setActiveStep((prevStep) => (prevStep + 1) % steps); // Pindah ke langkah berikutnya setiap 5 detik
+    }, 5000);
+
+    return () => clearInterval(stepIntervalId); // Bersihkan interval saat komponen unmount
+  }, []);
+
+  useEffect(() => {
+    const initMap = () => {
+      if (!mapRef.current) {
+        mapRef.current = L.map('map-container').setView([51.505, -0.09], 13); // Initial map coordinates and zoom level
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18,
+        }).addTo(mapRef.current);
+
+        const customIcon = L.icon({
+          iconUrl: 'leaflet/dist/images/marker-icon.png', 
+          iconSize: [32, 32], // Size of the icon
+          iconAnchor: [16, 32], // Anchor point of the icon
+        });
+        // Example marker (replace with actual logic to update marker position)
+        L.marker([51.5, -0.09],{icon: customIcon}).addTo(mapRef.current)
+          .bindPopup('A floating marker.')
+          .openPopup();
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      initMap();
+    }
+  }, []);
 
   return (
     <div className="container">
@@ -72,16 +110,19 @@ function App() {
         <div className="position-log">
           <div className='log-tittle'>Position-Log</div>
           <ol>
-            <li>Preparation</li>
-            <li>Start</li>
-            <li>Floating ball set 1-10</li>
-            <li>Mission Surface Imaging </li>
-            <li>Mission Underwater Imaging </li>
-            <li>Finish</li>
+            <li className={activeStep === 0 ? 'active-step' : ''}>Preparation</li>
+            <li className={activeStep === 1 ? 'active-step' : ''}>Start</li>
+            <li className={activeStep === 2 ? 'active-step' : ''}>Floating ball set 1-10</li>
+            <li className={activeStep === 3 ? 'active-step' : ''}>Mission Surface Imaging</li>
+            <li className={activeStep === 4 ? 'active-step' : ''}>Mission Underwater Imaging</li>
+            <li className={activeStep === 5 ? 'active-step' : ''}>Finish</li>
           </ol>
         </div>
         <div className="scores">
-          <div className="score"><img src={surfaceImage} alt="Surface Imaging" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} /></div>
+          <div className="score">
+            {/* <img src={surfaceImage} alt="Surface Imaging" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} /> */}
+            4
+          </div>
           <div className="score">5</div>
         </div>
       </div>
@@ -95,15 +136,9 @@ function App() {
           </ul>
         </div>
         <div className="attitude">
-          <video ref={videoRef} autoPlay style={{ width: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }}></video>
+          {/* <video ref={videoRef} autoPlay style={{ width: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }}></video> */}
+          <div id="map-container" style={{ width: '100%', height: '100%' }}></div>
         </div>
-      </div>
-      <div className="other-indicators">
-        <div>Indikator Lain (bebas):</div>
-        <ul>
-          <li>Battery Level</li>
-          <li>Visual Video</li>
-        </ul>
       </div>
     </div>
   );
