@@ -109,14 +109,14 @@ function App() {
       <div className="content">
         <div className="position-log">
           <div className='log-tittle'>Position-Log</div>
-          <ol>
-            <li className={activeStep === 0 ? 'active-step' : ''}>Preparation</li>
-            <li className={activeStep === 1 ? 'active-step' : ''}>Start</li>
-            <li className={activeStep === 2 ? 'active-step' : ''}>Floating ball set 1-10</li>
-            <li className={activeStep === 3 ? 'active-step' : ''}>Mission Surface Imaging</li>
-            <li className={activeStep === 4 ? 'active-step' : ''}>Mission Underwater Imaging</li>
-            <li className={activeStep === 5 ? 'active-step' : ''}>Finish</li>
-          </ol>
+          <div className='list1'>
+            <div className={activeStep === 0 ? 'active-step' : 'step'}>Preparation</div>
+            <div className={activeStep === 1 ? 'active-step' : 'step'}>Start</div>
+            <div className={activeStep === 2 ? 'active-step' : 'step'}>Floating ball set 1-10</div>
+            <div className={activeStep === 3 ? 'active-step' : 'step'}>Mission Surface Imaging</div>
+            <div className={activeStep === 4 ? 'active-step' : 'step'}>Mission Underwater Imaging</div>
+            <div className={activeStep === 5 ? 'active-step' : 'step'}>Finish</div>
+          </div>
         </div>
         <div className="scores">
           <div className="score">
@@ -127,16 +127,20 @@ function App() {
         </div>
       </div>
       <div className="attitudes">
+        <div className='video'>
+          <video ref={videoRef} autoPlay style={{ width: '100%', maxHeight: '100%' }}></video>
+          <div className='vidInfo'>Live Cam</div>
+          {/* video */}
+        </div>
         <div className="attitudeinfo">
           <div className='attitude-tittle'>Attitude Information</div>
-          <ul>
-            <li>Trajectory graph (mapping)</li>
-            <li>SOG</li>
-            <li>COG</li>
-          </ul>
+          <div className='list2'>
+            <div className='stats'>Trajectory graph</div>
+            <div className='stats'>SOG</div>
+            <div className='stats'>COG</div>
+          </div>
         </div>
         <div className="attitude">
-          {/* <video ref={videoRef} autoPlay style={{ width: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }}></video> */}
           <div id="map-container" style={{ width: '100%', height: '100%' }}></div>
         </div>
       </div>
