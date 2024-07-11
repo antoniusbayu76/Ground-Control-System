@@ -12,13 +12,12 @@ body {
   width: 100vw;
   height: 100vh;
   padding: 20px;
-  border: white;
-  border-radius: 8px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 
 .header {
   display: flex;
@@ -28,7 +27,7 @@ body {
   border: 2px solid green;
   border-radius: 8px;
   background-color: yellow;
-  gap: 800px;
+  padding: 10px;
 }
 
 .nama-tim,
@@ -36,37 +35,39 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 .content {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 10px;
-  gap: 410px;
+  gap: 20px;
+  flex-wrap: wrap; /* Tambahkan ini untuk responsif */
 }
 
-.position-log,
-.attitudeinfo,
-.other-indicators {
-  /* Remove grid-column: span 2; as it's not applicable */
+.position-log {
+  flex: 0.5;
 }
 
 .log-tittle,
 .attitude-tittle {
-  width: 450px;
   border: 2px solid green;
   border-radius: 8px;
   background-color: yellow;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5px;
 }
 
 .scores {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  gap: 50px;
+  gap: 10px;
+  flex-wrap: wrap; /* Tambahkan ini untuk responsif */
+  width: 50%;
 }
 
 .score {
@@ -74,15 +75,20 @@ body {
   align-items: center;
   justify-content: center;
   border: 2px solid #000;
-  width: 200px;
-  height: 150px;
+  width: 320px;
+  height: 240px;
 }
 
 .attitudes {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 10px;
-  gap: 408px;
+  gap: 20px;
+  flex-wrap: wrap; /* Tambahkan ini untuk responsif */
+}
+
+.attitudeinfo {
+  flex: 0.5;
 }
 
 .attitude {
@@ -90,6 +96,36 @@ body {
   align-items: center;
   justify-content: center;
   border: 2px solid #000;
-  width: 455px;
-  height: 260px;
+  width: 660px;
+  height: 280px;
+}
+
+/* CSS tambahan untuk indikator langkah aktif */
+.active-step {
+  font-weight: bold;
+  color: red;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .content,
+  .attitudes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scores,
+  .attitudes {
+    gap: 10px;
+  }
+
+  .score,
+  .attitude {
+    width: 90%;
+  }
 }
