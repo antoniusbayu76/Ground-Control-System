@@ -6,6 +6,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #e5e5e5;
 }
 
 
@@ -25,9 +26,10 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 5px;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
   border-radius: 8px;
-  background-color: yellow;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
+  background-color: #efefef;
   padding: 10px;
 }
 
@@ -41,16 +43,18 @@ body {
 
 .content {
   display: flex;
-  justify-content: space-between;
+  gap: 5px;
   margin-bottom: 10px;
-  gap: 20px;
   flex-wrap: wrap; /* Tambahkan ini untuk responsif */
 }
 
 .position-log {
-  flex: 0.5;
-  border: 2px solid green;
-  background-color: rgb(255, 255, 144);
+  width: 320px;
+  display: flex;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background-color: rgb(228, 228, 228);
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
   flex-direction: column;
 }
 
@@ -74,7 +78,7 @@ body {
 
 .step{
   width: 70%;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
   background-color: red;
   border-radius: 8px;
   display: flex;
@@ -85,7 +89,8 @@ body {
 
 .stats{
   width: 70%;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
   background-color: red;
   border-radius: 8px;
   display: flex;
@@ -96,8 +101,9 @@ body {
 
 .log-tittle,
 .attitude-tittle {
-  border-bottom: 2px solid green;
-  background-color: yellow;
+  border-bottom: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background-color: #efefef;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,8 +112,8 @@ body {
 
 .scores {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
   flex-wrap: wrap; /* Tambahkan ini untuk responsif */
   width: 50%;
@@ -117,43 +123,56 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
   width: 320px;
-  height: 240px;
+  height: 267px;
+}
+
+.logo-box{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap; /* Tambahkan ini untuk responsif */
+  width: 325px;
+}
+
+.logo {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
+  width:325px;
+  height: 100%;
 }
 
 .attitudes {
   display: flex;
-  /* justify-content: space-between; */
-  /* gap: 10px; */
+  justify-content: space-between;
+  gap: 10px;
   flex-wrap: wrap; /* Tambahkan ini untuk responsif */
 }
 
 .attitudeinfo {
-  width: 339px;
-  border-bottom: 2px solid green;
-  border-top: 2px solid green;
-  background-color: rgb(255, 255, 144);
-}
-
-.video{
-  border: 2px solid green;
-  width: 24%;
-  background-color: yellow;
-}
-
-.vidInfo{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
+  width: 320px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
+  background-color: rgb(227, 227, 227);
 }
 
 .attitude {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.3);
   width: 660px;
   height: 280px;
 }
@@ -161,7 +180,7 @@ body {
 /* CSS tambahan untuk indikator langkah aktif */
 .active-step {
   width: 70%;
-  border: 2px solid green;
+  border: 2px solid #e5e5e5;
   background-color: rgb(0, 255, 0);
   border-radius: 8px;
   display: flex;
@@ -182,11 +201,6 @@ body {
     flex-direction: column;
     flex-wrap: wrap; /* Tambahkan ini untuk responsif */
     width: 70%;
-  }
-
-  .video{
-    width: 70%;
-    height: 200px;
   }
 
   .attitudeinfo{
