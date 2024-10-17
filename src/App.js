@@ -5,73 +5,75 @@ import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
 
 function App() {
   const [surfaceImage, setSurfaceImage] = useState('');
-  const [activeStep, setActiveStep] = useState(0); // State untuk melacak langkah aktif
-  const videoRef = useRef(null);
-  const mapRef = useRef(null); // useRef untuk menyimpan referensi ke elemen peta
+  const [surfaceImage1, setSurfaceImage1] = useState('');
+  const [activeStep, setActiveStep] = useState(0);
+  const mapRef = useRef(null);
 
   useEffect(() => {
-    const imgPaths = ['/pic.jpg', '/pic2.jpg']; // Tambahkan lebih banyak jalur gambar jika diperlukan
+    const imgPaths = ['/pic.jpg', '/pic2.jpg'];
     let currentIndex = 0;
     let intervalId;
 
-    // Fungsi untuk memuat gambar dan menangani keberadaan gambar
     const loadImage = (path) => {
       const img = new Image();
       img.onload = () => {
         setSurfaceImage(path);
-        // Jika gambar yang dimuat adalah pic2.jpg, hentikan penggantian gambar
         if (path === '/pic2.jpg') {
           clearInterval(intervalId);
         }
       };
       img.onerror = () => {
-        // Handle error jika gambar tidak ditemukan
         console.error(`Gambar ${path} tidak ditemukan.`);
       };
       img.src = path;
     };
 
-    // Fungsi untuk mengganti gambar secara berkala
-    const changeImage = () => {
-      currentIndex = (currentIndex + 1) % imgPaths.length;
-      loadImage(imgPaths[currentIndex]);
-    };
-
-    // Mulai dengan memuat gambar pertama kali saat komponen dimount
     loadImage(imgPaths[currentIndex]);
 
-    // Mengatur interval untuk mengganti gambar
-    intervalId = setInterval(changeImage, 5000); // Ganti gambar setiap 5 detik
-
-    // Bersihkan interval saat komponen unmount
-    return () => clearInterval(intervalId);
-  }, []); // Dependency array kosong agar useEffect dipanggil hanya sekali saat komponen dimount
-
-  useEffect(() => {
-    // Fungsi untuk mengakses webcam
-    const startVideo = () => {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          }
-        })
-        .catch((err) => {
-          console.error('Error accessing webcam: ', err);
-        });
-    };
-
-    startVideo();
-  }, []); // Dependency array kosong agar useEffect dipanggil hanya sekali saat komponen dimount
-
-  useEffect(() => {
-    const steps = 6; // Jumlah langkah
-    let stepIntervalId = setInterval(() => {
-      setActiveStep((prevStep) => (prevStep + 1) % steps); // Pindah ke langkah berikutnya setiap 5 detik
+    intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % imgPaths.length;
+      loadImage(imgPaths[currentIndex]);
     }, 5000);
 
-    return () => clearInterval(stepIntervalId); // Bersihkan interval saat komponen unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const imgPaths = ['/pic3.jpg', '/pic4.jpg'];
+    let currentIndex = 0;
+    let intervalId;
+
+    const loadImage = (path) => {
+      const img = new Image();
+      img.onload = () => {
+        setSurfaceImage1(path);
+        if (path === '/pic4.jpg') {
+          clearInterval(intervalId);
+        }
+      };
+      img.onerror = () => {
+        console.error(`Gambar ${path} tidak ditemukan.`);
+      };
+      img.src = path;
+    };
+
+    loadImage(imgPaths[currentIndex]);
+
+    intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % imgPaths.length;
+      loadImage(imgPaths[currentIndex]);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const steps = 6;
+    let stepIntervalId = setInterval(() => {
+      setActiveStep((prevStep) => (prevStep + 1) % steps);
+    }, 5000);
+
+    return () => clearInterval(stepIntervalId);
   }, []);
 
   useEffect(() => {
@@ -103,7 +105,8 @@ function App() {
   return (
     <div className="container">
       <div className="header">
-        <div className='nama-tim'>Nama Tim: SAFINAH-ONE PT: GAMANTARAY</div>
+        <div className='nama-tim'>Nama Tim: SAFINAH-ONE </div>
+        <div className='nama-tim'>PT: GAMANTARAY</div>
         <div className='lintasan'>Lintasan: .... ( A / B )</div>
       </div>
       <div className="content">
@@ -118,20 +121,24 @@ function App() {
             <div className={activeStep === 5 ? 'active-step' : 'step'}>Finish</div>
           </div>
         </div>
+        <div className="logo-box">
+          <div className='logo'>
+          <p>POWERED BY</p>
+          <img src="LogoGamantaray.png" alt="New Section Image" style={{ width: '70%', height: 'auto' }} />
+          </div>
+        </div>
+
+        
         <div className="scores">
           <div className="score">
-            {/* <img src={surfaceImage} alt="Surface Imaging" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} /> */}
-            4
+            <img src={surfaceImage} alt="Surface Imaging" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} />
           </div>
-          <div className="score">5</div>
+          <div className="score">
+            <img src={surfaceImage1} alt="Surface Imagingg" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} />
+          </div>
         </div>
       </div>
       <div className="attitudes">
-        <div className='video'>
-          <video ref={videoRef} autoPlay style={{ width: '100%', maxHeight: '100%' }}></video>
-          <div className='vidInfo'>Live Cam</div>
-          {/* video */}
-        </div>
         <div className="attitudeinfo">
           <div className='attitude-tittle'>Attitude Information</div>
           <div className='list2'>
