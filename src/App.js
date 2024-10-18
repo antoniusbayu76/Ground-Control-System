@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import L, { icon } from 'leaflet'; // Import Leaflet library
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
+import io from 'socket.io-client'; // Import Socket.IO-client
+const socket = io('http://localhost:3001'); // URL backend server
 
 function App() {
   const [surfaceImage, setSurfaceImage] = useState('');
@@ -10,62 +12,50 @@ function App() {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const imgPaths = ['/pic.jpg', '/pic2.jpg'];
-    let currentIndex = 0;
-    let intervalId;
+    // Menerima gambar baru dari backend via Socket.IO
+    socket.on('new-image', (imagePath) => {
+      // Update gambar secara dinamis di UI
+      const fullPath = `http://localhost:3001${imagePath}`;
+      if (surfaceImage === '') {
+        setSurfaceImage(fullPath);
+      } else {
+        setSurfaceImage1(fullPath);
+      }
+    });
 
-    const loadImage = (path) => {
-      const img = new Image();
-      img.onload = () => {
-        setSurfaceImage(path);
-        if (path === '/pic2.jpg') {
-          clearInterval(intervalId);
-        }
-      };
-      img.onerror = () => {
-        console.error(`Gambar ${path} tidak ditemukan.`);
-      };
-      img.src = path;
+    return () => {
+      socket.off('new-image');
     };
+  }, [surfaceImage, surfaceImage1]);
 
-    loadImage(imgPaths[currentIndex]);
+  // useEffect(() => {
+  //   const imgPaths = ['/pic3.jpg', '/pic4.jpg'];
+  //   let currentIndex = 0;
+  //   let intervalId;
 
-    intervalId = setInterval(() => {
-      currentIndex = (currentIndex + 1) % imgPaths.length;
-      loadImage(imgPaths[currentIndex]);
-    }, 5000);
+  //   const loadImage = (path) => {
+  //     const img = new Image();
+  //     img.onload = () => {
+  //       setSurfaceImage1(path);
+  //       if (path === '/pic4.jpg') {
+  //         clearInterval(intervalId);
+  //       }
+  //     };
+  //     img.onerror = () => {
+  //       console.error(`Gambar ${path} tidak ditemukan.`);
+  //     };
+  //     img.src = path;
+  //   };
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   loadImage(imgPaths[currentIndex]);
 
-  useEffect(() => {
-    const imgPaths = ['/pic3.jpg', '/pic4.jpg'];
-    let currentIndex = 0;
-    let intervalId;
+  //   intervalId = setInterval(() => {
+  //     currentIndex = (currentIndex + 1) % imgPaths.length;
+  //     loadImage(imgPaths[currentIndex]);
+  //   }, 5000);
 
-    const loadImage = (path) => {
-      const img = new Image();
-      img.onload = () => {
-        setSurfaceImage1(path);
-        if (path === '/pic4.jpg') {
-          clearInterval(intervalId);
-        }
-      };
-      img.onerror = () => {
-        console.error(`Gambar ${path} tidak ditemukan.`);
-      };
-      img.src = path;
-    };
-
-    loadImage(imgPaths[currentIndex]);
-
-    intervalId = setInterval(() => {
-      currentIndex = (currentIndex + 1) % imgPaths.length;
-      loadImage(imgPaths[currentIndex]);
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   useEffect(() => {
     const steps = 6;
