@@ -113,7 +113,7 @@ body {
 .scores {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 5px;
   flex-wrap: wrap; /* Tambahkan ini untuk responsif */
   width: 50%;
