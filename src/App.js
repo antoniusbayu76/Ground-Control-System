@@ -1,9 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import L, { icon } from 'leaflet'; // Import Leaflet library
+import L from 'leaflet'; // Import Leaflet library
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
-import io from 'socket.io-client'; // Import Socket.IO-client
-const socket = io('http://localhost:3001'); // URL backend server
+import { initializeApp } from 'firebase/app'; // Firebase App initialization
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'; // Firebase storage functions
+
+// Your Firebase configuration (replace with your actual Firebase project credentials)
+const firebaseConfig = {
+  apiKey: "AIzaSyDYKL8mNqhBnHLCpjXDhPLj4rusod10tLE",
+  authDomain: "coba-4a9ab.firebaseapp.com",
+  projectId: "coba-4a9ab",
+  storageBucket: "coba-4a9ab.appspot.com",
+  messagingSenderId: "157860719335",
+  appId: "1:157860719335:web:fe53f19132141978a85042",
+  measurementId: "G-XW1PEFMQGW"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 function App() {
   const [surfaceImage, setSurfaceImage] = useState('');
@@ -12,50 +27,56 @@ function App() {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // Menerima gambar baru dari backend via Socket.IO
-    socket.on('new-image', (imagePath) => {
-      // Update gambar secara dinamis di UI
-      const fullPath = `http://localhost:3001${imagePath}`;
-      if (surfaceImage === '') {
-        setSurfaceImage(fullPath);
-      } else {
-        setSurfaceImage1(fullPath);
-      }
-    });
+    const imgPaths = ['pic1.png', 'pic2.png']; // Names of images in Firebase Storage
+    let currentIndex = 0;
+    let intervalId;
 
-    return () => {
-      socket.off('new-image');
+    const loadImage = (path) => {
+      const imageRef = ref(storage, path); // Create a reference to the file in Firebase Storage
+      getDownloadURL(imageRef)
+        .then((url) => {
+          setSurfaceImage(url);
+        })
+        .catch((error) => {
+          console.error(`Error loading ${path}:`, error);
+        });
     };
-  }, [surfaceImage, surfaceImage1]);
 
-  // useEffect(() => {
-  //   const imgPaths = ['/pic3.jpg', '/pic4.jpg'];
-  //   let currentIndex = 0;
-  //   let intervalId;
+    loadImage(imgPaths[currentIndex]);
 
-  //   const loadImage = (path) => {
-  //     const img = new Image();
-  //     img.onload = () => {
-  //       setSurfaceImage1(path);
-  //       if (path === '/pic4.jpg') {
-  //         clearInterval(intervalId);
-  //       }
-  //     };
-  //     img.onerror = () => {
-  //       console.error(`Gambar ${path} tidak ditemukan.`);
-  //     };
-  //     img.src = path;
-  //   };
+    intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % imgPaths.length;
+      loadImage(imgPaths[currentIndex]);
+    }, 5000);
 
-  //   loadImage(imgPaths[currentIndex]);
+    return () => clearInterval(intervalId);
+  }, []);
 
-  //   intervalId = setInterval(() => {
-  //     currentIndex = (currentIndex + 1) % imgPaths.length;
-  //     loadImage(imgPaths[currentIndex]);
-  //   }, 5000);
+  useEffect(() => {
+    const imgPaths = ['pic3.png', 'pic4.png']; // Names of images in Firebase Storage
+    let currentIndex = 0;
+    let intervalId;
 
-  //   return () => clearInterval(intervalId);
-  // }, []);
+    const loadImage = (path) => {
+      const imageRef = ref(storage, path); // Create a reference to the file in Firebase Storage
+      getDownloadURL(imageRef)
+        .then((url) => {
+          setSurfaceImage1(url);
+        })
+        .catch((error) => {
+          console.error(`Error loading ${path}:`, error);
+        });
+    };
+
+    loadImage(imgPaths[currentIndex]);
+
+    intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % imgPaths.length;
+      loadImage(imgPaths[currentIndex]);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const steps = 6;
@@ -76,12 +97,11 @@ function App() {
         }).addTo(mapRef.current);
 
         const customIcon = L.icon({
-          iconUrl: 'leaflet/dist/images/marker-icon.png', 
+          iconUrl: 'leaflet/dist/images/marker-icon.png',
           iconSize: [32, 32], // Size of the icon
           iconAnchor: [16, 32], // Anchor point of the icon
         });
-        // Example marker (replace with actual logic to update marker position)
-        L.marker([51.5, -0.09],{icon: customIcon}).addTo(mapRef.current)
+        L.marker([51.5, -0.09], { icon: customIcon }).addTo(mapRef.current)
           .bindPopup('A floating marker.')
           .openPopup();
       }
@@ -113,12 +133,11 @@ function App() {
         </div>
         <div className="logo-box">
           <div className='logo'>
-          <p>POWERED BY</p>
-          <img src="LogoGamantaray.png" alt="New Section Image" style={{ width: '70%', height: 'auto' }} />
+            <p>POWERED BY</p>
+            <img src="LogoGamantaray.png" alt="New Section Image" style={{ width: '70%', height: 'auto' }} />
           </div>
         </div>
 
-        
         <div className="scores">
           <div className="score">
             <img src={surfaceImage} alt="Surface Imaging" style={{ maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto' }} />
