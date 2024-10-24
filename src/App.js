@@ -7,13 +7,7 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage'; // Firebase 
 
 // Your Firebase configuration (replace with your actual Firebase project credentials)
 const firebaseConfig = {
-  apiKey: "AIzaSyDYKL8mNqhBnHLCpjXDhPLj4rusod10tLE",
-  authDomain: "coba-4a9ab.firebaseapp.com",
-  projectId: "coba-4a9ab",
-  storageBucket: "coba-4a9ab.appspot.com",
-  messagingSenderId: "157860719335",
-  appId: "1:157860719335:web:fe53f19132141978a85042",
-  measurementId: "G-XW1PEFMQGW"
+  
 };
 
 // Initialize Firebase
